@@ -1,24 +1,36 @@
+{# 继承 base.html 模板，意味着当前页面会复用 base.html 中的基础结构，如头部、导航栏、底部等部分 #}
 {% extends 'base.html' %}
+
+{# 开始定义 content 块，这个块会替换 base.html 中定义的同名块的内容，用于放置当前页面特有的内容 #}
 {% block content%}
+{# 定义页面内联样式，用于修改 jumbotron 组件的样式 #}
 <style>
+    {# 为 jumbotron 类设置样式 #}
     .jumbotron {
-        background-color: #563d7c;
-        color:white
+        background-color: #563d7c;  {# 设置背景颜色为深紫色 #}
+        color: white;  {# 设置文本颜色为白色 #}
     }
 </style>
+{# 使用 Bootstrap 的 jumbotron 组件，它通常用于展示重要的信息或号召性内容 #}
 <div class="jumbotron">
-  <h1 class="display-4">
-    {% if current_user.username %}
-        Hello, {{ current_user.username }} !
-    {% else %}
-        Hello, world!
-    {% endif %}
-
-  </h1>
-  <p class="lead">欢迎来到明日学员</p>
-  <hr class="my-4">
-  <p>和我们一起开启编程学习之旅吧！</p>
-  <a class="btn btn-success btn-lg" href="#" role="button">Learn more</a>
+    {# 显示一个大标题，使用 display-4 类来设置标题的大小和样式 #}
+    <h1 class="display-4">
+        {# 使用 Jinja2 模板语法进行条件判断，如果当前用户已登录，获取其用户名 #}
+        {% if current_user.username %}
+            Hello, {{ current_user.username }} !  {# 显示欢迎信息，包含用户的用户名 #}
+        {# 如果当前用户未登录 #}
+        {% else %}
+            Hello, world!  {# 显示通用的欢迎信息 #}
+        {% endif %}
+    </h1>
+    {# 显示一个副标题，使用 lead 类来设置副标题的样式，使其更加突出 #}
+    <p class="lead">欢迎来到明日学员</p>
+    {# 插入一条水平分割线，使用 my-4 类来设置上下外边距 #}
+    <hr class="my-4">
+    {# 显示一段描述性文本，介绍页面的主要内容或引导用户操作 #}
+    <p>和我们一起开启编程学习之旅吧！</p>
+    {# 创建一个按钮，使用 btn 系列类来设置按钮的样式，btn-success 表示绿色按钮，btn-lg 表示大尺寸按钮 #}
+    <a class="btn btn-success btn-lg" href="#" role="button">Learn more</a>
 </div>
-
+{# 结束 content 块的定义 #}
 {% endblock %}

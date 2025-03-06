@@ -1,93 +1,122 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-    <!-- Required meta tags -->
+    <!-- 必需的元数据标签 -->
+    <!-- 设置页面的字符编码为UTF-8 -->
     <meta charset="utf-8">
+    <!-- 设置页面的视口，用于响应式设计，使页面在不同设备上正确显示 -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS样式表链接 -->
+    <!-- 使用Flask的url_for函数来生成静态文件（这里是Bootstrap的CSS文件）的URL -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- 自定义的CSS样式表链接 -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- 可选的JavaScript脚本 -->
+    <!-- 首先引入jQuery库，用于处理页面交互等功能 -->
     <script src="{{ url_for('static', filename='js/jquery-3.3.1.slim.min.js') }}"></script>
+    <!-- 这里重复引入了jQuery库，可能是笔误，实际只需要引入一次 -->
     <script src="{{ url_for('static', filename='js/jquery-3.3.1.slim.min.js') }}"></script>
+    <!-- 引入Bootstrap的JavaScript脚本，用于实现Bootstrap的各种交互功能 -->
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='js/main.js') }}"></script>
-    <title>明日学院</title>
+    <!-- 自定义的JavaScript脚本，用于实现页面的特定功能 -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- 设置页面的标题 -->
+    <title>途为高慧</title>
+    <!-- 自定义的内联CSS样式 -->
     <style>
-        .nav-item {
-            padding-left:20px;
+       .nav-item {
+            padding-left: 20px;
         }
     </style>
 </head>
+
 <body>
-<!-- 导航栏开始  -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="/">
-            <span style="padding-left:5px">明日学院</span>
-        </a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav" style="margin:0 30px">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">首页 <span class="sr-only">(current)</span></a>
+    <!-- 导航栏开始  -->
+    <!-- 使用Bootstrap的navbar类来创建导航栏，navbar-expand-lg表示导航栏在大屏幕上展开，navbar-dark表示深色主题，bg-dark表示背景颜色为深色 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <!-- 导航栏品牌链接，点击后返回首页 -->
+            <a class="navbar-brand" href="/">
+                <span style="padding-left:5px">途为高慧</span>
+            </a>
+            <!-- 导航栏内容折叠部分，用于在小屏幕设备上显示下拉菜单 -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav" style="margin:0 30px">
+                    <!-- 导航栏项目，active类表示当前页面，点击后返回首页 -->
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">首页 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <!-- 导航栏项目，点击后跳转到全部课程页面 -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/courses/">全部课程</a>
+                    </li>
+                    <!-- 导航栏项目，点击后跳转到关于我们页面 -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about/">关于我们</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- 右侧导航栏项目 -->
+            <ul class="navbar-nav">
+                <!-- 使用Flask的Jinja2模板语法进行条件判断，如果当前用户已认证（已登录） -->
+                {% if current_user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <!-- 下拉菜单按钮，使用Bootstrap的dropdown-toggle类来触发下拉菜单，data-toggle="dropdown"表示开启下拉功能，aria-haspopup="true"和aria-expanded="false"用于辅助屏幕阅读器 -->
+                    <button class="btn btn-outline-success dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        我的
+                    </button>
+                    <!-- 下拉菜单内容 -->
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <!-- 下拉菜单项，点击后跳转到修改密码页面 -->
+                        <a class="dropdown-item" href="/change_password">修改密码</a>
+                        <!-- 下拉菜单分隔线 -->
+                        <div class="dropdown-divider"></div>
+                        <!-- 下拉菜单项，点击后退出登录 -->
+                        <a class="dropdown-item" href="/logout">退出登录</a>
+                    </div>
                 </li>
+                <!-- 如果当前用户未认证（未登录） -->
+                {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/courses/">全部课程</a>
+                    <!-- 导航栏项目，链接到登录页面，按钮样式为btn btn-outline-success -->
+                    <a class="nav-link" href="/login" style="color:white;">
+                        <button class="btn btn-outline-success" >
+                            登录
+                        </button>
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about/">关于我们</a>
-                </li>
+                {% endif %}
             </ul>
         </div>
-        <ul class="navbar-nav">
-            {% if current_user.is_authenticated %}
-            <li class="nav-item dropdown">
-                <button class="btn btn-outline-success dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  我的
-                </button>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="/change_password">修改密码</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/logout">退出登录</a>
-                </div>
-            </li>
-            {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="/login" style="color:white;">
-                <button class="btn btn-outline-success" >
-                  登录
-                </button>
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
-</nav>
-<!-- 导航栏结束  -->
-{% block content %}
+    </nav>
+    <!-- 导航栏结束  -->
+    <!-- 使用Jinja2模板语法定义一个块，用于在继承该模板的子模板中填充内容 -->
+    {% block content %}
 
-{% endblock %}
-<!-- 底部信息开始  -->
-<div class="footer">
-    <div class="footer-left" >
-        <p>明日学院 是明日科技公司旗下专注职业技能提升的在线学习平台。</p>
-        <ul>
-            <li>关于我们</li>
-            <li>联系我们</li>
-            <li>帮助中心</li>
-        </ul>
+    {% endblock %}
+    <!-- 底部信息开始  -->
+    <div class="footer">
+        <div class="footer-left" >
+            <p>途为高慧</p>
+            <ul>
+                <li>关于我们</li>
+                <li>联系我们</li>
+                <li>帮助中心</li>
+            </ul>
+        </div>
+        <div class="footer-right">
+            <!-- 显示二维码图片，使用Flask的url_for函数生成图片的URL -->
+            <img height="120px" width="120px" src="{{ url_for('static', filename='images/qrcode.jpg') }}">
+            <p>关注微信公众平台</p>
+        </div>
+        <div>
+            <p style="text-align:center;clear:both">©1997-2019 途为高慧 版权所有</p>
+        </div>
     </div>
-    <div class="footer-right">
-        <img height="120px" width="120px" src="{{ url_for('static', filename='images/qrcode.jpg') }}">
-        <p>关注微信公众平台</p>
-    </div>
-    <div>
-        <p style="text-align:center;clear:both">©1997-2019 明日学院 版权所有</p>
-    </div>
-</div>
-<!-- 底部信息结束  -->
+    <!-- 底部信息结束  -->
 
 </body>
+
 </html>

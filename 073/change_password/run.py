@@ -1,5 +1,5 @@
 from flask import Flask,render_template, redirect, url_for,flash
-from app.forms import SettingForm
+from forms import SettingForm
 from werkzeug.security import check_password_hash,generate_password_hash
 from flask_login import UserMixin,LoginManager,current_user,login_required
 from flask_sqlalchemy import SQLAlchemy
