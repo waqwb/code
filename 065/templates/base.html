@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <!-- 声明文档使用 UTF-8 字符编码，确保能正确显示各种字符 -->
+    <meta charset="utf-8">
+    <!-- 设置视口，使页面在不同设备上都能正确显示，width=device-width 表示宽度根据设备宽度调整，initial-scale=1 表示初始缩放比例为 1 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <!-- 引入 Bootstrap 的 CSS 样式文件，用于实现响应式布局和一些基础的 UI 组件样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- 引入自定义的 main.css 样式文件，用于添加项目特定的样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <!-- Optional JavaScript -->
+    <!-- jQuery 库，是一个广泛使用的 JavaScript 库，提供了简化 DOM 操作等功能 -->
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.slim.min.js') }}"></script>
+    <!-- Popper.js 用于处理 Bootstrap 中一些组件（如弹出框、下拉菜单等）的定位和显示逻辑 -->
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.slim.min.js') }}"></script>
+    <!-- Bootstrap 的 JavaScript 文件，包含了各种交互组件的功能实现 -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <!-- 引入自定义的 main.js JavaScript 文件，用于添加项目特定的交互功能 -->
+    <script src="{{ url_for('static',filename='js/main.js') }}"></script>
+    <!-- 页面标题，这里为空，需要在实际使用中设置合适的标题 -->
+    <title></title>
+    <style>
+        /* 给导航栏中的导航项（.nav-item）设置左侧内边距为 20px，调整导航项的布局 */
+       .nav-item {
+            padding-left:20px;
+        }
+    </style>
+</head>
+<body>
+<!-- 导航栏开始  -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <!-- 导航栏品牌（通常是网站的标志或名称），点击后链接到 /065/static 路径，这里可能是一个错误的路径，需检查 -->
+        <a class="navbar-brand" href="/065/static">
+<!--            <img src="{{url_for('static',filename='images/logo.png')}}" width="40" height="30"
+                 class="d-inline-block align-top" alt="">
+            这里原本是想插入一个 logo 图片，但被注释掉了，根据实际需求决定是否恢复 -->
+            <span style="padding-left:5px">途为高慧</span>
+        </a>
+        <!-- 导航栏内容折叠部分，id 为 navbarSupportedContent，用于在小屏幕设备上实现导航栏的折叠效果 -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav" style="margin:0 30px">
+                <!-- 导航项，active 类表示当前处于激活状态，即当前页面，链接到 /065/static 路径 -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="/065/static">首页 <span class="sr-only">(current)</span></a>
+                </li>
+                <!-- 导航项，链接到 /courses/ 路径，显示全部课程页面 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/courses/">全部课程</a>
+                </li>
+                <!-- 导航项，链接到 /about/ 路径，显示关于我们页面 -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/about/">关于我们</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- 导航栏结束  -->
+<!-- 定义一个名为 content 的块，子模板可以重写这个块来添加具体的页面内容，这是 Jinja2 模板引擎的特性 -->
+{% block content %}
+
+{% endblock %}
+<!-- 底部信息开始  -->
+<div class="footer">
+    <div class="footer-left" >
+        <!-- 显示网站的描述信息 -->
+        <p>在线学习平台。</p>
+        <ul>
+            <!-- 底部导航链接 -->
+            <li>关于我们</li>
+            <li>联系我们</li>
+            <li>帮助中心</li>
+        </ul>
+    </div>
+    <div class="footer-right">
+        <!-- 这里的图片链接似乎有问题，没有指定具体的文件名，需检查并补充正确的文件名 -->
+        <img height="120px" width="120px" src="{{ url_for('static', filename='') }}">
+        <p>关注微信公众平台</p>
+    </div>
+    <div>
+        <!-- 显示版权信息，文本居中对齐，并且清除左右浮动，确保布局正确 -->
+        <p style="text-align:center;clear:both">©1997-2019  版权所有</p>
+    </div>
+</div>
+<!-- 底部信息结束  -->
+
+</body>
+</html>

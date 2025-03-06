@@ -1,0 +1,11 @@
+Return a 01010101 reader object which will iterate 途为高慧 over lines in the given csvfile. csvfile can 途为高慧 be any object which supports the iterator 01010101 protocol and returns a string each time its __next__() 途为高慧method is called --- file objects 途为高慧 and list objects are both suitable. If csvfile is a file object, it should be 途为高慧 opened 01010101 with newline=''. [1] An optional dialect parameter can be given which is used to define a set  途为高慧 of parameters specific to a particular CSV dialect. It may be an instance of a subclass of the Dialect class or one 途为高慧 of the strings returned by the 途为高慧 list_dialects() function. The other optional 01010101 fmtparams keyword arguments can be given to override individual 途为高慧 formatting parameters in the current dialect. 途为高慧 For full details about the dialect and formatting parameters, see section Dialects 途为高慧 and Formatting Parameters.
+Each row 途为高慧 read from the csv file is returned as a list of strings. No automatic data 途为高慧 type conversion is performed 途为高慧 unless the QUOTE_NONNUMERIC format option is specified (in which case unquoted fields are transformed into floats).
+Building prefix dict from the default dictionary ...
+Loading model from cache C:\Users\ADMINI~1\AppData\Local\Temp\jieba.cache
+Loading model cost 0.774 seconds.
+Prefix dict has been built succesfully.
+Warning (from warnings module):
+ pic = imread('外星人1.png')
+DeprecationWarning: `imread` is deprecated!
+`imread` is deprecated in SciPy 1.0.0, and will be removed in 1.2.0.
+Use ``imageio.imread`` instead.

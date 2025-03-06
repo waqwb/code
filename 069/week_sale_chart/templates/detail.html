@@ -1,0 +1,302 @@
+<!-- 继承自 base.html 模板 -->
+{% extends 'base.html' %}
+<!-- 定义内容块 -->
+{% block content %}
+
+<!-- 定义一个 Bootstrap 容器 -->
+<div class="container">
+    <!-- 定义一个 Bootstrap 行，设置上下外边距为 20px，左右自动居中 -->
+    <div class="row" style="margin:20px auto;">
+        <!-- 定义一个占 6 列宽度的列，用于显示课程大图 -->
+        <div class="col-sm-6">
+            <!-- 显示课程的大图，图片链接从 course 对象的 big_img_url 属性获取 -->
+            <img src="{{course.big_img_url}}" class="card-img-top"
+                 alt="..." width="450px" height="260px">
+        </div>
+        <!-- 定义一个占 6 列宽度的列，用于显示课程的基本信息 -->
+        <div class="col-sm-6">
+            <!-- 显示课程名称 -->
+            <h4>{{course.product_name}}</h4>
+            <!-- 显示课程讲师信息 -->
+            <div class="course-info">课程讲师：{{course.lector_name}}</div>
+            <!-- 显示课程所属机构信息 -->
+            <div class="course-info">所属机构：{{course.provider}}</div>
+            <!-- 显示课程学习人数信息 -->
+            <div class="course-info">学习人数：{{course.learner_count}}人</div>
+            <!-- 显示课程评分信息 -->
+            <div class="course-info">课程评分：{{course.score}}</div>
+            <!-- 再次显示课程学习人数信息 -->
+            <div class="course-info">学习人数：{{course.learner_count}}</div>
+            <!-- 显示课程价格信息 -->
+            <div class="course-price">
+                <!-- 如果课程有原价 -->
+                {% if course.original_price%}
+                    <!-- 如果课程有折扣价 -->
+                    {% if course.discount_price %}
+                        <!-- 显示折扣价 -->
+                        ￥{{course.discount_price}}
+                        <!-- 显示原价并添加删除线 -->
+                        <span style="text-decoration: line-through;color: #666666;font-size: 14px;margin-left: 15px;">￥{{course.original_price}}</span>
+                    <!-- 如果课程没有折扣价 -->
+                    {% else %}
+                        <!-- 显示原价 -->
+                        ￥{{course.original_price}}
+                    {% endif %}
+                <!-- 如果课程没有原价 -->
+                {% else %}
+                    <!-- 显示免费 -->
+                    免费
+                {% endif %}
+            </div>
+            <!-- 定义一个按钮，点击后跳转到网易云课程介绍页面 -->
+            <div>
+                <a href="https://study.163.com/course/introduction/{{course.course_id}}.htm" target="view_window">
+                    <button type="button" class="btn btn-danger" >直达网易云</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- 定义一个占满一行的列 -->
+    <div class="col-sm">
+        <!-- 定义一个导航标签页 -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <!-- 定义第一个标签页：课程介绍 -->
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="课程介绍" aria-selected="true">课程介绍</a>
+            </li>
+            <!-- 定义第二个标签页：最近一周销量 -->
+            <li class="nav-item">
+                <a class="nav-link" id="week-tab" data-toggle="tab" href="#week" role="tab" aria-controls="本周销量" aria-selected="false">最近一周销量</a>
+            </li>
+            <!-- 定义第三个标签页：最近一个月销量 -->
+            <li class="nav-item">
+                <a class="nav-link" id="month-tab" data-toggle="tab" href="#month" role="tab" aria-controls="本月销量" aria-selected="true">最近一个月销量</a>
+            </li>
+            <!-- 定义第四个标签页：每月销量 -->
+            <li class="nav-item">
+                <a class="nav-link" id="year-tab" data-toggle="tab" href="#year" role="tab" aria-controls="年度销量" aria-selected="false">每月销量</a>
+            </li>
+        </ul>
+        <!-- 定义标签页内容区域 -->
+        <div class="tab-content" id="myTabContent" style="min-height:260px;padding:20px;background:#fbfbfb;">
+            <!-- 定义第一个标签页内容：课程介绍 -->
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <!-- 遍历课程描述内容，按行分割并显示 -->
+                {% for content in course.description.splitlines() %}
+                    {{ content }}<br>
+                {% endfor %}
+            </div>
+            <!-- 定义第二个标签页内容：最近一周销量 -->
+            <div class="tab-pane fade" id="week" role="tabpanel" aria-labelledby="week-tab">
+                <!-- 定义一个用于显示 ECharts 图表的容器 -->
+                <div id="sale-week" style="width: 1000px;height:400px;"></div>
+            </div>
+            <!-- 定义第三个标签页内容：最近一个月销量 -->
+            <div class="tab-pane fade" id="month" role="tabpanel" aria-labelledby="month-tab">
+                <!-- 定义一个用于显示 ECharts 图表的容器 -->
+                <div id="sale-month" style="width: 1000px;height:400px;"></div>
+            </div>
+            <!-- 定义第四个标签页内容：每月销量 -->
+            <div class="tab-pane fade" id="year" role="tabpanel" aria-labelledby="year-tab">
+                <!-- 定义一个用于显示 ECharts 图表的容器 -->
+                <div id="sale-year" style="width: 1000px;height:400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 引入 jQuery 库 -->
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+<!-- 引入 ECharts 库 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts-en.common.js"></script>
+
+<script>
+    // 为导航标签页的链接添加点击事件监听器
+    $('.nav-link').click(function(){
+        // 获取当前点击链接的 id 属性值
+        var id = $(this).attr('id');
+        // 从 id 中提取类型信息（如 week、month、year 等）
+        var type = id.split("-")[0];
+        // 构建 ECharts 图表容器的 id
+        var echarts_id = 'sale-' + type;
+        // 基于准备好的 DOM 元素，初始化 ECharts 实例
+        var myChart = echarts.init(document.getElementById(echarts_id));
+        /*
+        // 初始设置 ECharts 图表的配置项
+        myChart.setOption({
+            title: {
+                text: ''
+            },
+            tooltip: {},
+            legend: {
+                data:['销量']
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {
+                min: function(value) {
+                    return value.min - 10;
+                }
+            },
+            series: [{
+                name: '销量',
+                type: 'line',
+                data: []
+            }]
+        });
+        */
+        // 设置 ECharts 图表的详细配置项
+        myChart.setOption({
+            // 设置图表背景色为渐变
+            backgroundColor: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: '#c86589'
+            },
+            {
+                offset: 1,
+                color: '#06a7ff'
+            }
+            ], false),
+            // 设置图表标题
+            title: {
+                text: "OCTOBER 2015",
+                left: "center",
+                bottom: "5%",
+                textStyle: {
+                    color: "#fff",
+                    fontSize: 16
+                }
+            },
+            // 设置图表网格布局
+            grid: {
+                top: '20%',
+                left: '10%',
+                right: '10%',
+                bottom: '15%',
+                containLabel: true,
+            },
+            // 设置 x 轴配置
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: [],
+                axisLabel: {
+                    margin: 30,
+                    color: '#ffffff63'
+                },
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: true,
+                    length: 25,
+                    lineStyle: {
+                        color: "#ffffff1f"
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#ffffff1f'
+                    }
+                }
+            },
+            // 设置 y 轴配置
+            yAxis: [{
+                type: 'value',
+                position: 'right',
+                axisLabel: {
+                    margin: 20,
+                    color: '#ffffff63'
+                },
+                axisTick: {
+                    show: true,
+                    length: 15,
+                    lineStyle: {
+                        color: "#ffffff1f",
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#ffffff1f'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
+                        width: 2
+                    }
+                }
+            }],
+            // 设置系列配置
+            series: [{
+                name: '注册总量',
+                type: 'line',
+                smooth: true, // 是否平滑曲线显示
+                showAllSymbol: true,
+                symbol: 'circle',
+                symbolSize: 6,
+                lineStyle: {
+                    normal: {
+                        color: "#fff", // 线条颜色
+                    },
+                },
+                label: {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                        color: '#fff',
+                    }
+                },
+                itemStyle: {
+                    color: "red",
+                    borderColor: "#fff",
+                    borderWidth: 3
+                },
+                tooltip: {
+                    show: false
+                },
+                areaStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: '#eb64fb'
+                            },
+                            {
+                                offset: 1,
+                                color: '#3fbbff0d'
+                            }
+                        ], false),
+                    }
+                },
+                data: []
+            }]
+        })
+        // 构建异步请求的 URL，用于获取课程销售数据
+        url = '/course_data/'+{{course.course_id}}+'/type/'+type
+        // 发起异步 GET 请求
+        $.get(url).done(function (data) {
+            // 将返回的字符串数据转换为 JavaScript 对象
+            data = JSON.parse(data)
+            // 更新 ECharts 图表的配置项，填入实际数据
+            myChart.setOption({
+                title: {
+                    text: data.title
+                },
+                xAxis: {
+                    data: data.categories
+                },
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: '销量',
+                    data: data.data
+                }]
+            });
+        });
+    })
+</script>
+{% endblock %}

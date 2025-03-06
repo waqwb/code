@@ -1,0 +1,24 @@
+{# 使用 with 语句从 Flask 的 get_flashed_messages 函数获取闪现消息，with_categories=true 表示同时获取消息的分类 #}
+{# 闪现消息是一种在一次请求到下一次请求之间临时存储并显示给用户的消息，常用于反馈操作结果等场景 #}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {# 检查是否存在闪现消息，如果存在则进行后续处理 #}
+    {% if messages %}
+        {# 遍历每条闪现消息，messages 是一个包含元组的列表，每个元组的第一个元素是消息分类，第二个元素是消息内容 #}
+        {% for category, message in messages %}
+            {# 使用 Bootstrap 的 alert 组件来显示消息，alert-{{ category }} 动态设置消息框的样式，根据不同的分类显示不同的颜色 #}
+            {# alert-dismissible 表示消息框可以关闭，fade show 用于实现消息框的淡入效果 #}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {# 显示具体的消息内容 #}
+                {{ message }}
+                {# 创建一个关闭按钮，点击该按钮可以关闭消息框 #}
+                {# data-dismiss="alert" 是 Bootstrap 的属性，用于触发关闭 alert 组件的操作 #}
+                {# aria-label="Close" 为辅助设备提供关闭按钮的描述信息 #}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    {# 显示关闭按钮的图标，&times; 是 HTML 实体，表示乘号（×），用于作为关闭图标 #}
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{# 结束 with 语句块 #}
+{% endwith %}

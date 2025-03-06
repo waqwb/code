@@ -1,0 +1,109 @@
+{# 继承 base.html 模板，意味着当前模板会复用 base.html 的整体结构，只需要在特定的块中添加自己的内容 #}
+{% extends 'base.html' %}
+{# 定义 content 块，该块的内容会替换 base.html 中定义的 content 块的内容，用于展示课程详情信息 #}
+{% block content %}
+
+    {# 使用 Bootstrap 的 container 类创建一个响应式的容器，用于包裹页面主要内容 #}
+    <div class="container">
+        {# 使用 Bootstrap 的 row 类创建一个行，用于水平排列子元素，设置上下外边距为 20px，左右自动居中 #}
+        <div class="row" style="margin:20px auto;">
+            {# 使用 Bootstrap 的 col-sm-6 类，将一行分为两列，当前列占 6 个栅格，用于显示课程大图 #}
+            <div class="col-sm-6">
+                {# 显示课程的大图，图片的源地址从 course 对象的 big_img_url 属性获取，设置宽度和高度 #}
+                <img src="{{ course.big_img_url }}" class="card-img-top"
+                     alt="..." width="450px" height="260px">
+            </div>
+            {# 使用 Bootstrap 的 col-sm-6 类，将一行分为两列，当前列占 6 个栅格，用于显示课程的基本信息和价格等 #}
+            <div class="col-sm-6">
+                {# 显示课程的名称，使用 h4 标题标签 #}
+                <h4>{{ course.product_name }}</h4>
+                {# 显示课程的讲师信息，使用自定义的 course-info 类样式 #}
+                <div class="course-info">课程讲师：{{ course.lector_name }}</div>
+                {# 显示课程所属的机构信息，使用自定义的 course-info 类样式 #}
+                <div class="course-info">所属机构：{{ course.provider }}</div>
+                {# 显示课程的学习人数信息，使用自定义的 course-info 类样式 #}
+                <div class="course-info">学习人数：{{ course.learner_count }}人</div>
+                {# 显示课程的评分信息，使用自定义的 course-info 类样式 #}
+                <div class="course-info">课程评分：{{ course.score }}</div>
+                {# 再次显示课程的学习人数信息，这里可能是重复显示，可根据实际情况调整 #}
+                <div class="course-info">学习人数：{{ course.learner_count }}</div>
+                {# 显示课程的价格信息，使用自定义的 course-price 类样式 #}
+                <div class="course-price">
+                    {# 判断课程是否有原价 #}
+                    {% if course.original_price %}
+                        {# 如果课程有折扣价 #}
+                        {% if course.discount_price %}
+                            {# 显示折扣后的价格 #}
+                            ￥{{ course.discount_price }}
+                            {# 使用删除线样式显示原价，并设置颜色和字体大小，添加左边距 #}
+                            <span style="text-decoration: line-through;color: #666666;font-size: 14px;margin-left: 15px;">￥{{ course.original_price }}</span>
+                        {# 如果课程没有折扣价 #}
+                        {% else %}
+                            {# 直接显示原价 #}
+                            ￥{{ course.original_price }}
+                        {% endif %}
+                    {# 如果课程没有原价，认为是免费课程 #}
+                    {% else %}
+                        免费
+                    {% endif %}
+                </div>
+                {# 创建一个链接，点击后会在新窗口打开网易云课程介绍页面，链接地址根据课程的 course_id 动态生成 #}
+                <div>
+                    <a href="https://study.163.com/course/introduction/{{ course.course_id }}.htm" target="view_window">
+                        {# 创建一个红色的按钮，按钮文本为直达网易云 #}
+                        <button type="button" class="btn btn-danger">直达网易云</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {# 使用 Bootstrap 的 col-sm 类，该列会根据内容自动调整宽度，用于显示课程的详细介绍和销量统计的标签页 #}
+        <div class="col-sm">
+            {# 创建一个导航标签页，使用 Bootstrap 的 nav 和 nav-tabs 类 #}
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                {# 第一个导航标签项，默认激活状态，点击后显示课程介绍内容 #}
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                       aria-controls="课程介绍" aria-selected="true">课程介绍</a>
+                </li>
+                {# 第二个导航标签项，点击后显示最近一周销量内容 #}
+                <li class="nav-item">
+                    <a class="nav-link" id="week-tab" data-toggle="tab" href="#week" role="tab" aria-controls="本周销量"
+                       aria-selected="false">最近一周销量</a>
+                </li>
+                {# 第三个导航标签项，点击后显示最近一个月销量内容 #}
+                <li class="nav-item">
+                    <a class="nav-link" id="month-tab" data-toggle="tab" href="#month" role="tab"
+                       aria-controls="本月销量" aria-selected="true">最近一个月销量</a>
+                </li>
+                {# 第四个导航标签项，点击后显示每月销量内容 #}
+                <li class="nav-item">
+                    <a class="nav-link" id="year-tab" data-toggle="tab" href="#year" role="tab" aria-controls="年度销量"
+                       aria-selected="false">每月销量</a>
+                </li>
+            </ul>
+            {# 标签页内容容器，使用 Bootstrap 的 tab-content 类，设置最小高度、内边距和背景颜色 #}
+            <div class="tab-content" id="myTabContent" style="min-height:260px;padding:20px;background:#fbfbfb;">
+                {# 第一个标签页内容，默认显示，使用 Bootstrap 的 tab-pane、fade、show 和 active 类 #}
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    {# 遍历课程描述信息，按行分割并逐行显示，每行后面添加换行符 #}
+                    {% for content in course.description.splitlines() %}
+                        {{ content }}<br>
+                    {% endfor %}
+                </div>
+                {# 第二个标签页内容，初始隐藏，用于显示最近一周销量图表，预留一个 div 容器，后续可通过 JavaScript 填充图表 #}
+                <div class="tab-pane fade" id="week" role="tabpanel" aria-labelledby="week-tab">
+                    <div id="sale-week" style="width: 1000px;height:400px;"></div>
+                </div>
+                {# 第三个标签页内容，初始隐藏，用于显示最近一个月销量图表，预留一个 div 容器，后续可通过 JavaScript 填充图表 #}
+                <div class="tab-pane fade" id="month" role="tabpanel" aria-labelledby="month-tab">
+                    <div id="sale-month" style="width: 1000px;height:400px;"></div>
+                </div>
+                {# 第四个标签页内容，初始隐藏，用于显示每月销量图表，预留一个 div 容器，后续可通过 JavaScript 填充图表 #}
+                <div class="tab-pane fade" id="year" role="tabpanel" aria-labelledby="year-tab">
+                    <div id="sale-year" style="width: 1000px;height:400px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{# 结束 content 块的定义 #}
+{% endblock %}
