@@ -8,8 +8,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 # 从 forms 模块导入 LoginForm 和 SettingForm 类，用于处理登录和设置表单
 from forms import LoginForm, SettingForm
-# 从 werkzeug.security 模块导入 check_password_hash 函数，用于验证密码哈希值
-from werkzeug.security import check_password_hash
 # 从 flask_login 模块导入所需的功能
 # UserMixin 是一个基类，用于为用户模型添加必要的属性和方法
 # LoginManager 用于管理用户登录状态
@@ -87,7 +85,7 @@ def login():
         if not user:
             flash('邮箱不存在', 'danger')
         # 如果用户存在，验证用户输入的密码是否正确
-        elif check_password_hash(user.password, form.password.data):
+        elif user.password == form.password.data:
             # 如果密码正确，登录用户，并根据用户选择是否记住登录状态
             login_user(user, remember=form.remember.data)
             # 获取用户请求的下一个页面
